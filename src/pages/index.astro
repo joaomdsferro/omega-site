@@ -1,0 +1,157 @@
+---
+import Base from "../layouts/Base.astro";
+import OmegaMark from "../components/OmegaMark.astro";
+import { en as t } from "../i18n/en";
+
+// Ideas from the closing sentence open a prefilled issue here.
+const IDEAS_ISSUES = "https://github.com/joaomdsferro/omega-site/issues/new";
+const [zap, notch] = t.apps;
+// Depth of the hero Ω: the tile's thickness behind it and the mark's layers in front.
+const slabs = [6, 5, 4, 3, 2, 1, 0];
+const layers = [1, 2, 3, 4, 5, 6, 7, 8];
+const intro = [
+  { src: "/img/omega-centauri-vst.webp", w: 1200, h: 1200, cls: "pass pass--a" },
+  { src: "/img/omega-centauri-hubble.webp", w: 1200, h: 1200, cls: "pass pass--b" },
+  { src: "/img/omega-centauri-field.webp", w: 1800, h: 1361, cls: "pass pass--c" },
+];
+---
+<Base t={t}>
+  <header class="nav">
+    <a class="nav__mark" href="/" aria-label="Omega, home"><OmegaMark class="nav__omega" /><span>omega</span></a>
+    <nav class="nav__links" aria-label="Main">
+      <a class="link" href="#apps">{t.nav.apps}</a>
+      <a class="link" href="#about">{t.nav.about}</a>
+      <a class="link" href="#faq">{t.nav.faq}</a>
+      <a class="link" href="https://github.com/joaomdsferro">{t.nav.source}</a>
+    </nav>
+    <a class="button button--small" href="#apps">{t.nav.action}</a>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="hero-name">
+      <div class="hero__line">
+        <button class="hero__omega" type="button" aria-label="Show the next app's colour" data-cycle>
+          <span class="omega3d" data-tilt-hero>
+            <span class="omega3d__spin">
+              {slabs.map((z) => <span class="omega3d__slab" style={`--z:${z}`} />)}
+              {layers.map((z) => <OmegaMark class="omega3d__layer" style={`--z:${z}`} />)}
+            </span>
+          </span>
+        </button>
+        <h1 class="hero__word" id="hero-name"><span class="sr-only">O</span>{"mega".split("").map((c, i) => <span class="hero__letter" style={`--i:${i}`}>{c}</span>)}</h1>
+      </div>
+      <div class="hero__foot">
+        <p class="hero__lead">{t.hero.lead}</p>
+        <p class="hero__state" aria-live="polite" data-state-line>{t.hero.states[0].line}</p>
+        <a class="button" href="#apps">{t.hero.action}</a>
+      </div>
+    </section>
+
+    <section class="intro" aria-label="Private by default">
+      <div class="intro__pin">
+        <p class="intro__statement" data-reveal>{t.intro.statement}</p>
+      </div>
+      <div class="intro__passing">
+        {intro.map((img, i) => (
+          <figure class={img.cls}>
+            <img src={img.src} width={img.w} height={img.h} alt={t.intro.captions[i]} loading="lazy" decoding="async" />
+            <figcaption>{t.intro.captions[i]}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </section>
+
+    <section class="apps" id="apps" aria-label={t.nav.apps}>
+      <article class="split split--zap" data-app-block="zap">
+        <div class="split__visual" data-tilt>
+          <img src="/img/zap-screenshot.webp" width="1280" height="800" loading="lazy" decoding="async" alt="Omega Zap showing a group chat in the WhatsApp dark theme, with the chat list on the left" />
+        </div>
+        <div class="split__text" data-reveal>
+          <h2 class="app__name">{zap.name}</h2>
+          <div class="app__body">
+            <p><strong>{zap.title}.</strong> {zap.body}</p>
+            <p class="app__meta">{zap.platforms} · {zap.version}</p>
+            <p class="app__links"><a class="button button--small" href={zap.download}>{t.appLinks.download}</a> <a class="link" href={zap.source}>{t.appLinks.source}</a></p>
+          </div>
+        </div>
+      </article>
+
+      <article class="split split--notch" data-app-block="notch">
+        <div class="split__visual split__visual--edge" data-tilt>
+          <img src="/img/notch-card.webp" width="444" height="587" loading="lazy" decoding="async" alt="Omega Notch on the right edge of a KDE Plasma screen, with Claude Code's card open: current session 87% used, weekly limit 17%, tokens today and recent chats" />
+        </div>
+        <div class="split__text" data-reveal>
+          <h2 class="app__name">{notch.name}</h2>
+          <div class="app__body">
+            <p><strong>{notch.title}.</strong> {notch.body}</p>
+            <p class="app__meta">{notch.platforms} · {notch.version}</p>
+            <p class="app__links"><a class="button button--small" href={notch.download}>{t.appLinks.download}</a> <a class="link" href={notch.source}>{t.appLinks.source}</a></p>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="about" id="about" aria-label={t.nav.about}>
+      <dl class="about__facts" data-reveal>
+        {t.about.facts.map((f) => (<div><dt>{f.label}</dt><dd>{f.value}</dd></div>))}
+      </dl>
+      <div class="about__text" data-reveal>
+        <p class="about__first"><span class="about__cap" aria-hidden="true" data-tilt><OmegaMark /></span><strong>Omega</strong>{t.about.first.slice("Omega".length)}</p>
+        <p class="about__second">{t.about.second}</p>
+      </div>
+    </section>
+
+    <section class="faq" id="faq" aria-labelledby="faq-h">
+      <h2 class="faq__heading" id="faq-h" data-reveal>{t.faq.heading}</h2>
+      <div class="faq__list" data-reveal>
+        {t.faq.items.map((item) => (
+          <details class="faq__item">
+            <summary>{item.q}<span class="faq__chev" aria-hidden="true"></span></summary>
+            <p>{item.a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <section class="cta" aria-label="Suggest an app">
+      <form class="cta__sentence" action={IDEAS_ISSUES} method="get" target="_blank" data-reveal data-idea>
+        <label for="idea">{t.cta.before}</label>
+        <textarea id="idea" name="title" rows="1" maxlength="200" placeholder={t.cta.placeholder} data-ideas={JSON.stringify(t.cta.ideas)} autocomplete="off" spellcheck="true" required data-1p-ignore data-lpignore="true" data-bwignore data-form-type="other"></textarea>
+        <button type="submit">{t.cta.button}</button>
+        <input type="hidden" name="labels" value="idea" />
+      </form>
+      <p class="cta__after">{t.cta.after}</p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__top">
+      <div class="footer__invite">
+        <p class="footer__line">{t.footer.invite}</p>
+        <a class="button button--ink" href="https://github.com/joaomdsferro/omega-zap/blob/main/CONTRIBUTING.md">{t.footer.action}</a>
+      </div>
+      <ul class="footer__links">
+        {t.footer.links.map((l) => (<li><a class="link" href={l.href}>{l.label}</a></li>))}
+      </ul>
+    </div>
+    <div class="footer__legal">
+      <p>{t.footer.credits}</p>
+      <p>{t.footer.legal}</p>
+    </div>
+    <div class="footer__loop" aria-hidden="true" data-loop>
+      <div class="footer__track">
+        {[0, 1].map(() => (
+          <span class="footer__set">
+            {t.apps.map((app) => (<><span class={`footer__app footer__app--${app.id}`}>{app.name}</span><OmegaMark class="footer__mark" /></>))}
+            <span class="footer__app">{t.footer.yours}</span><OmegaMark class="footer__mark" />
+          </span>
+        ))}
+      </div>
+    </div>
+  </footer>
+
+  <script is:inline define:vars={{ states: t.hero.states }}>
+    window.__omegaStates = states;
+  </script>
+  <script src="../scripts/main.js"></script>
+</Base>
